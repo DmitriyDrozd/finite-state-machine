@@ -33,6 +33,7 @@ class FSM {
             throw new Error('Such state doesn\'t exist');
         }
 
+        this.stepHistory.push(this.getState());
         this.state = state;
         this.stateTransitions = this.statesStorage[state].transitions;
     }
@@ -47,8 +48,13 @@ class FSM {
         }
 
         let state = this.stateTransitions[event];
-        this.changeState(state);
-        this.stepHistory.push(state);
+
+        if (this.getStates(event).indexOf(state)) {
+            this.changeState(state);
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -56,6 +62,7 @@ class FSM {
      */
     reset() {
         this.changeState(this.initialState);
+        this.clearHistory();
     }
 
     /**
@@ -92,8 +99,8 @@ class FSM {
         if (this.stepHistory.length) {
             let state = this.stepHistory.pop();
 
+            this.undosHistory.push(this.getState());
             this.changeState(state);
-            this.undosHistory.push(state);
 
             return true;
         }
@@ -112,7 +119,6 @@ class FSM {
             let state = this.undosHistory.pop();
 
             this.changeState(state);
-            this.stepHistory.push(state);
 
             return true;
         }
@@ -126,6 +132,7 @@ class FSM {
      */
     clearHistory() {
         this.stepHistory = [];
+        this.undosHistory = [];
     }
 }
 
