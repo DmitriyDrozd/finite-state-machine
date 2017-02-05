@@ -12,6 +12,8 @@ class FSM {
         this.state = config.initial;
         this.statesStorage = config.states;
         this.stateTransitions = config.states[config.initial].transitions;
+        this.stepHistory = [];
+        this.undosHistory = [];
     }
 
     /**
@@ -46,6 +48,7 @@ class FSM {
 
         let state = this.stateTransitions[event];
         this.changeState(state);
+        this.stepHistory.push(state);
     }
 
     /**
@@ -86,6 +89,17 @@ class FSM {
      * @returns {Boolean}
      */
     undo() {
+        if (this.stepHistory.length) {
+            let state = this.stepHistory.pop();
+
+            this.changeState(state);
+            this.undosHistory.push(state);
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -94,12 +108,24 @@ class FSM {
      * @returns {Boolean}
      */
     redo() {
+        if (this.undosHistory.length) {
+            let state = this.undosHistory.pop();
+
+            this.changeState(state);
+            this.stepHistory.push(state);
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
      * Clears transition history
      */
     clearHistory() {
+        this.stepHistory = [];
     }
 }
 
