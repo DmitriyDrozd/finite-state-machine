@@ -32,7 +32,7 @@ class FSM {
         }
 
         this.state = state;
-        this.stateTransitions = this.statesStorage[this.state].transitions;
+        this.stateTransitions = this.statesStorage[state].transitions;
     }
 
     /**
@@ -44,6 +44,8 @@ class FSM {
             throw new Error('Such state doesn\'t exist');
         }
 
+        let state = this.stateTransitions[event];
+        this.changeState(state);
     }
 
     /**
