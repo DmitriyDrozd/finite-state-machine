@@ -51,6 +51,7 @@ class FSM {
 
         if (this.getStates(event).indexOf(state)) {
             this.changeState(state);
+            this.undosHistory = [];
         }
         else {
             return false;
