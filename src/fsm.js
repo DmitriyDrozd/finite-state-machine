@@ -101,6 +101,7 @@ class FSM {
 
             this.undosHistory.push(this.getState());
             this.changeState(state);
+            this.stepHistory.pop();
 
             return true;
         }
