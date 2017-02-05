@@ -50,7 +50,7 @@ class FSM {
      * Resets FSM state to initial.
      */
     reset() {
-        this.state = this.initialState;
+        this.changeState(this.initialState);
     }
 
     /**
@@ -60,7 +60,22 @@ class FSM {
      * @returns {Array}
      */
     getStates(event) {
+        let states = [];
 
+        for (let state in this.statesStorage) {
+            if (event) {
+                for (let transition in this.statesStorage[state].transitions) {
+                    if (transition === event) {
+                        states.push(state);
+                    }
+                }
+            }
+            else {
+                states.push(state);
+            }
+        }
+
+        return states;
     }
 
     /**
