@@ -27,7 +27,7 @@ class FSM {
      * @param state
      */
     changeState(state) {
-        if (!this.statesStorage.indexOf(state)) {
+        if (!this.statesStorage[state]) {
             throw new Error('Such state doesn\'t exist');
         }
 
@@ -60,6 +60,7 @@ class FSM {
      * @returns {Array}
      */
     getStates(event) {
+
     }
 
     /**
